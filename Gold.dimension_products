@@ -1,0 +1,18 @@
+
+CREATE VIEW  Gold.dim_Products AS
+SELECT
+  ROW_NUMBER() OVER (ORDER BY prd_id) AS Surrogate_Key,
+   ci.prd_id AS Product_ID,
+   ci.cat_id AS Category_ID,
+  ci.prd_key AS Product_Key,
+  ci.prd_num AS Product_Number,
+  ci.prd_cost AS Product_Cost,
+   ci.prd_line AS Product_line,
+    ca.cat AS Catetgory,
+  ca.subcat AS subcategory,
+  ca.maintenance,
+  ci.prd_start_dt AS Product_start_date
+FROM silver.crm_prd_info ci
+LEFT JOIN silver.erp_px_cat_giv2 ca
+ON ci.cat_id = ca.ID
+ WHERE prd_end_dt is NULL
