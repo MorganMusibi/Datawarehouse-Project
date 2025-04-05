@@ -1,0 +1,22 @@
+
+CREATE VIEW gold.dim_Customers AS
+SELECT 
+   ROW_NUMBER() OVER (ORDER BY cst_id) AS Surrogate,
+   ci.cst_id AS Customer_id,
+   ci.cst_key AS Customer_key,
+   ci.cst_firstname AS Customer_First_Name,
+   ci.cst_lastname AS Customer_Last_Last_Name,
+   
+	  CASE WHEN ci.cst_gndr != 'NA' THEN ci.cst_gndr
+	      ELSE COALESCE(ca.GEN, 'N/A')
+		END AS Gender,
+ ci.cst_marital_status AS Customer_Marital_status,
+   la.cntry AS Country,
+
+		ca.bdate AS Date_Of_Birth,
+	ci.cst_create_date AS Customer_Create_Date
+FROM silver.crm_cust_info ci
+LEFT JOIN silver.erp_cust_az12 ca
+ON ci.cst_key = ca.CID
+LEFT JOIN silver.erp_loc_a101 la 
+ON ci.cst_key = la.CID
