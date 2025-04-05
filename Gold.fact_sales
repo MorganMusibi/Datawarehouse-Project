@@ -1,0 +1,17 @@
+
+CREATE VIEW gold.fact_sales AS
+SELECT
+  pc.sls_ord_num AS Order_Number,
+  pn.surrogate_key,
+  ps.surrogate,
+   pc.sls_ord_dt AS Order_Date,
+   pc.sls_ship_dt AS Sales_Ship_Date,
+   pc.sls_sales AS Sales,
+   pc.sls_quantity AS Sales_Quntity,
+  pc. sls_price AS Sales_price,
+  pc.sls_due_dt AS Sales_due_date
+FROM silver.crm_sales_details pc
+LEFT JOIN gold.dim_Customers ps
+ON pc.sls_cust_id = ps.customer_id
+LEFT JOIN gold.dim_products pn
+ON pc.sls_prd_key = pn.product_number
